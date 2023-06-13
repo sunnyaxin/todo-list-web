@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC, useCallback, useState} from "react";
 import "./App.css";
 import {Button, InputGroup, ListGroup, Stack, Form, CloseButton} from "react-bootstrap";
 
@@ -12,7 +12,7 @@ export const App: FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [items, setItems] = useState<Item[]>([]);
 
-  const handleItemAdded = () => {
+  const handleItemAdded = useCallback(() => {
     setInputValue("");
     setItems([
       {
@@ -22,19 +22,19 @@ export const App: FC = () => {
       },
       ...items
     ]);
-  };
+  }, [setInputValue, setItems, inputValue]);
   
-  const handleItemChecked = (itemId: number) => {
+  const handleItemChecked = useCallback((itemId: number) => {
     setItems((preItems) => 
       preItems.map((item) => item.id === itemId? {...item, isCompleted: !item.isCompleted}: item 
       ));
-  };
+  },[setItems]);
   
-  const handleItemDeleted = (itemId: number) => {
+  const handleItemDeleted = useCallback((itemId: number) => {
     setItems((preItems) =>
       preItems.filter((item) => item.id != itemId)
     );
-  };
+  }, [setItems]);
   
   return (
     <Stack gap={1}>
