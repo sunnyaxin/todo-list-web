@@ -16,32 +16,32 @@ export const App: FC = () => {
     setInputValue("");
     setItems([
       {
-        id: items.length+1,
+        id: Math.random(),
         content: inputValue,
         isCompleted: false
       },
       ...items
     ]);
   };
-  
+
   const handleItemChecked = (itemId: number) => {
-    setItems((preItems) => 
-      preItems.map((item) => item.id === itemId? {...item, isCompleted: !item.isCompleted}: item 
+    setItems((preItems) =>
+      preItems.map((item) => item.id === itemId ? {...item, isCompleted: !item.isCompleted} : item
       ));
   };
-  
-  const handleItemDeleted =(itemId: number) => {
+
+  const handleItemDeleted = (itemId: number) => {
     setItems((preItems) =>
       preItems.filter((item) => item.id != itemId)
     );
   };
 
   const handleInputKeyDown = (event: KeyboardEvent) => {
-    if(event.key === "Enter"){
+    if (event.key === "Enter") {
       handleItemAdded();
     }
   };
-  
+
   return (
     <Stack gap={1}>
       <p className="fs-2">Best Todo Lists</p>
@@ -59,10 +59,15 @@ export const App: FC = () => {
           <ListGroup.Item key={item.id}>
             <Stack direction="horizontal" className="d-flex justify-content-between">
               <Stack direction="horizontal" gap={1}>
-                <Form.Check onChange={() => {handleItemChecked(item.id);}}/>
-                <div className={item.isCompleted?"text-decoration-line-through":"text-decoration-none"}>{item.content}</div>
+                <Form.Check onChange={() => {
+                  handleItemChecked(item.id);
+                }}/>
+                <div
+                  className={item.isCompleted ? "text-decoration-line-through" : "text-decoration-none"}>{item.content}</div>
               </Stack>
-              <CloseButton onClick={() => {handleItemDeleted(item.id);}}/>
+              <CloseButton onClick={() => {
+                handleItemDeleted(item.id);
+              }}/>
             </Stack>
           </ListGroup.Item>
         )}
