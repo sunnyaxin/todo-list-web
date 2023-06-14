@@ -29,6 +29,12 @@ export const App: FC = () => {
     }
   };
 
+  const handleUpdateItem = (itemId: number) => (content: string) => {
+    setItems((preItems) =>
+      preItems.map((item) => item.id === itemId ? {...item, content}: item)
+    );
+  };
+
   return (
     <Stack gap={1}>
       <p className="fs-2">Best Todo Lists</p>
@@ -44,7 +50,7 @@ export const App: FC = () => {
       <ListGroup>
         {items.map(item =>
           <ListGroup.Item key={item.id}>
-            <Item content={item.content} handleDeleteItem={() => handleDeleteItem(item.id)}/>
+            <Item content={item.content} handleDeleteItem={() => handleDeleteItem(item.id)} handleUpdateItem={handleUpdateItem(item.id)}/>
           </ListGroup.Item>
         )}
       </ListGroup>
