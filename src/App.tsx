@@ -1,36 +1,23 @@
 import React, {FC, KeyboardEvent, useState} from "react";
 import "./App.css";
-import {Button, InputGroup, ListGroup, Stack, Form, CloseButton} from "react-bootstrap";
-
-interface Item {
-    id: number,
-    content: string,
-    isCompleted: boolean
-}
+import {Button, InputGroup, ListGroup, Stack, Form} from "react-bootstrap";
+import {Item} from "./Item";
 
 export const App: FC = () => {
   const [inputValue, setInputValue] = useState("");
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<{ id: number, content: string }[]>([]);
 
   const handleItemAdded = () => {
     setInputValue("");
     setItems([
       {
         id: Math.random(),
-        content: inputValue,
-        isCompleted: false
-      },
-      ...items
-    ]);
+        content: inputValue
+      }
+      , ...items]);
   };
 
-  const handleItemChecked = (itemId: number) => {
-    setItems((preItems) =>
-      preItems.map((item) => item.id === itemId ? {...item, isCompleted: !item.isCompleted} : item
-      ));
-  };
-
-  const handleItemDeleted = (itemId: number) => {
+  const handleDeleteItem = (itemId: number) => {
     setItems((preItems) =>
       preItems.filter((item) => item.id != itemId)
     );
@@ -57,18 +44,7 @@ export const App: FC = () => {
       <ListGroup>
         {items.map(item =>
           <ListGroup.Item key={item.id}>
-            <Stack direction="horizontal" className="d-flex justify-content-between">
-              <Stack direction="horizontal" gap={1}>
-                <Form.Check onChange={() => {
-                  handleItemChecked(item.id);
-                }}/>
-                <div
-                  className={item.isCompleted ? "text-decoration-line-through" : "text-decoration-none"}>{item.content}</div>
-              </Stack>
-              <CloseButton onClick={() => {
-                handleItemDeleted(item.id);
-              }}/>
-            </Stack>
+            <Item content={item.content} handleDeleteItem={() => handleDeleteItem(item.id)}/>
           </ListGroup.Item>
         )}
       </ListGroup>
