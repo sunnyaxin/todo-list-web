@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useState} from "react";
+import React, {FC, KeyboardEvent, useState} from "react";
 import "./App.css";
 import {Button, InputGroup, ListGroup, Stack, Form, CloseButton} from "react-bootstrap";
 
@@ -12,7 +12,7 @@ export const App: FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [items, setItems] = useState<Item[]>([]);
 
-  const handleItemAdded = useCallback(() => {
+  const handleItemAdded = () => {
     setInputValue("");
     setItems([
       {
@@ -22,26 +22,35 @@ export const App: FC = () => {
       },
       ...items
     ]);
-  }, [setInputValue, setItems, inputValue]);
+  };
   
-  const handleItemChecked = useCallback((itemId: number) => {
+  const handleItemChecked = (itemId: number) => {
     setItems((preItems) => 
       preItems.map((item) => item.id === itemId? {...item, isCompleted: !item.isCompleted}: item 
       ));
-  },[setItems]);
+  };
   
-  const handleItemDeleted = useCallback((itemId: number) => {
+  const handleItemDeleted =(itemId: number) => {
     setItems((preItems) =>
       preItems.filter((item) => item.id != itemId)
     );
-  }, [setItems]);
+  };
+
+  const handleInputKeyDown = (event: KeyboardEvent) => {
+    if(event.key === "Enter"){
+      handleItemAdded();
+    }
+  };
   
   return (
     <Stack gap={1}>
       <p className="fs-2">Best Todo Lists</p>
       <Stack direction="horizontal" gap={2}>
         <InputGroup>
-          <Form.Control placeholder="Please enter to-do item" value={inputValue} onChange={event => setInputValue(event.target.value)}/>
+          <Form.Control placeholder="Please enter to-do item" value={inputValue}
+            onChange={event => setInputValue(event.target.value)}
+            onKeyDown={handleInputKeyDown}
+          />
         </InputGroup>
         <Button onClick={handleItemAdded}>Add</Button>
       </Stack>
