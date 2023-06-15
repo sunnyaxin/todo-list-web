@@ -5,36 +5,24 @@ import {Item} from "./Item";
 
 export const App: FC = () => {
   const [inputValue, setInputValue] = useState("");
-  const [items, setItems] = useState<{ id: number, content: string }[]>([]);
+  const [items, setItems] = useState<number[]>([]);
 
   const handleItemAdded = () => {
     if(inputValue != "") {
-      setInputValue("");
-      setItems([
-        {
-          id: Math.random(),
-          content: inputValue
-        }
-        , ...items]);
+      setItems([Math.random(), ...items]);
     }
   };
 
   const handleDeleteItem = (itemId: number) => {
     setItems((preItems) =>
-      preItems.filter((item) => item.id != itemId)
+      preItems.filter((id) => id != itemId)
     );
   };
 
-  const handleInputKeyDown = (event: KeyboardEvent) => {
+  const handleInputKeyUp = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
       handleItemAdded();
     }
-  };
-
-  const handleUpdateItem = (itemId: number) => (content: string) => {
-    setItems((preItems) =>
-      preItems.map((item) => item.id === itemId ? {...item, content}: item)
-    );
   };
 
   return (
@@ -44,15 +32,15 @@ export const App: FC = () => {
         <InputGroup>
           <Form.Control placeholder="Please enter to-do item" value={inputValue}
             onChange={event => setInputValue(event.target.value)}
-            onKeyUp={handleInputKeyDown}
+            onKeyUp={handleInputKeyUp}
           />
         </InputGroup>
         <Button onClick={handleItemAdded}>Add</Button>
       </Stack>
       <ListGroup>
-        {items.map(item =>
-          <ListGroup.Item key={item.id}>
-            <Item content={item.content} handleDeleteItem={() => handleDeleteItem(item.id)} handleUpdateItem={handleUpdateItem(item.id)}/>
+        {items.map(id =>
+          <ListGroup.Item key={id}>
+            <Item initContent={inputValue} handleDeleteItem={() => handleDeleteItem(id)}/>
           </ListGroup.Item>
         )}
       </ListGroup>
