@@ -8,13 +8,15 @@ export const App: FC = () => {
   const [items, setItems] = useState<{ id: number, content: string }[]>([]);
 
   const handleItemAdded = () => {
-    setInputValue("");
-    setItems([
-      {
-        id: Math.random(),
-        content: inputValue
-      }
-      , ...items]);
+    if(inputValue != "") {
+      setInputValue("");
+      setItems([
+        {
+          id: Math.random(),
+          content: inputValue
+        }
+        , ...items]);
+    }
   };
 
   const handleDeleteItem = (itemId: number) => {
@@ -42,7 +44,7 @@ export const App: FC = () => {
         <InputGroup>
           <Form.Control placeholder="Please enter to-do item" value={inputValue}
             onChange={event => setInputValue(event.target.value)}
-            onKeyDown={handleInputKeyDown}
+            onKeyUp={handleInputKeyDown}
           />
         </InputGroup>
         <Button onClick={handleItemAdded}>Add</Button>
