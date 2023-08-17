@@ -5,11 +5,13 @@ import {Item} from "./Item";
 
 export const App: FC = () => {
   const [inputValue, setInputValue] = useState("");
+  const [itemValue, setItemValue] = useState("");
   const [items, setItems] = useState<number[]>([]);
 
   const handleItemAdded = () => {
-    if(inputValue != "") {
+    if(itemValue != "") {
       setItems([Math.random(), ...items]);
+      setInputValue("");
     }
   };
 
@@ -22,6 +24,7 @@ export const App: FC = () => {
   const handleInputKeyUp = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
       handleItemAdded();
+      setInputValue("");
     }
   };
 
@@ -31,7 +34,7 @@ export const App: FC = () => {
       <Stack direction="horizontal" gap={2}>
         <InputGroup>
           <Form.Control placeholder="Please enter to-do item" value={inputValue}
-            onChange={event => setInputValue(event.target.value)}
+            onChange={event => {setInputValue(event.target.value); setItemValue(event.target.value);}}
             onKeyUp={handleInputKeyUp}
           />
         </InputGroup>
@@ -40,7 +43,7 @@ export const App: FC = () => {
       <ListGroup>
         {items.map(id =>
           <ListGroup.Item key={id}>
-            <Item initContent={inputValue} handleDeleteItem={() => handleDeleteItem(id)}/>
+            <Item initContent={itemValue} handleDeleteItem={() => handleDeleteItem(id)}/>
           </ListGroup.Item>
         )}
       </ListGroup>

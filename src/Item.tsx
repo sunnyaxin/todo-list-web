@@ -31,7 +31,8 @@ export const Item: FC<ItemProps> = ({initContent, handleDeleteItem}) => {
     <Stack direction="horizontal" className="d-flex justify-content-between">
       <Stack direction="horizontal" gap={1}>
         <Form.Check onChange={() => setIsCompleted(!isCompleted)}/>
-        <div onClick={() => {setIsEditing(true);}} className={isCompleted ? "text-decoration-line-through" : "text-decoration-none"}>
+        <div onClick={() => {setIsEditing(true);}} 
+          className={isCompleted ? "text-decoration-line-through" : "text-decoration-none"}>
           {content}
         </div>
       </Stack>
